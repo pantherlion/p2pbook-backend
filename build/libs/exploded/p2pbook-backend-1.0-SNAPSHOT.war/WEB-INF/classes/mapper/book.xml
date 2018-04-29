@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.BookDao">
+    <resultMap id="book" type="com.model.Book">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="bookname" jdbcType="VARCHAR" property="bookName" />
+        <result column="author" jdbcType="VARCHAR" property="author" />
+        <result column="publisher" jdbcType="VARCHAR" property="publisher" />
+        <result column="price" jdbcType="REAL" property="price" />
+        <result column="description" jdbcType="VARCHAR" property="desc" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <association property="user" select="com.dao.UserDao.getUserById" column="t_user_id"></association>
+    </resultMap>
+
+    <insert id="addBook" parameterType="com.model.Book" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t_book(bookname,author,publisher,price,category,description,t_user_id,url)
+        VALUES
+          (#{bookName},#{author},#{publisher},#{price},#{category},#{desc},#{user.id},#{url});
+    </insert>
+
+    <select id="showAllBooksExceptSelf" parameterType="com.model.User" resultMap="book">SELECT * FROM t_book</select>
+    <select id="showMyBooks" parameterType="int" resultMap="book">SELECT * FROM t_book where t_user_id=#{0}</select>
+
+</mapper>
