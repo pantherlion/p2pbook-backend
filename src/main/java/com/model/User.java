@@ -10,6 +10,7 @@ public class User {
     private String tel;
     private float deposit;
     private String url;
+    private byte auth;
 
     public int getId() {
         return id;
@@ -81,6 +82,14 @@ public class User {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public byte getAuth() {
+        return auth;
+    }
+
+    public void setAuth(byte auth) {
+        this.auth = auth;
     }
 
     @Override

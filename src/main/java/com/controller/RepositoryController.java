@@ -32,13 +32,38 @@ public class RepositoryController {
         return resultMap;
     }
 
-    @RequestMapping("/show-allbook-exceptSelf")
-    public List<Book> showAllBooksExceptSelf(){
-        return repositoryService.showAllBooksExceptSelf();
+    @RequestMapping("/removeBook")
+    public  Map<String,String> removeBook(int bookId){
+        int rows = repositoryService.removeBook(bookId);
+
+        Map<String,String> resultMap=new HashMap<>();
+        if(rows<=0){
+            //插入失败
+            resultMap.put("result","fail");
+        }
+        else{
+            resultMap.put("result","success");
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/show-allbook-byCategory")
+    public List<Book> showAllBooksBycategory(int categoryId){
+        return repositoryService.showAllBooksByCategory(categoryId);
+    }
+
+    @RequestMapping("/show-allbook-byAuthorOrBookName")
+    public List<Book> showAllBooksByAuthorOrBookName(String searchContent){
+        return repositoryService.showAllBooksByAuthorOrBookName(searchContent);
     }
 
     @RequestMapping("/show-mybook")
     public List<Book> getMyBooks(){
         return repositoryService.showMyBooks();
+    }
+
+    @RequestMapping("/show-myAvaliableBooks")
+    public List<Book> getMyAvaliableBooks(){
+        return repositoryService.getMyAvaliableBooks();
     }
 }

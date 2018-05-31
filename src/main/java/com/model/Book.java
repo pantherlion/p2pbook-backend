@@ -10,6 +10,7 @@ public class Book {
     private  User user;
     private  int category;
     private String url;
+    private int status;
 
     public int getId() {
         return id;
@@ -81,6 +82,14 @@ public class Book {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override

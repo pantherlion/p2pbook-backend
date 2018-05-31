@@ -12,6 +12,7 @@
         <result column="price" jdbcType="REAL" property="price" />
         <result column="description" jdbcType="VARCHAR" property="desc" />
         <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="status" jdbcType="INTEGER" property="status"/>
         <association property="user" select="com.dao.UserDao.getUserById" column="t_user_id"></association>
     </resultMap>
 
@@ -21,7 +22,19 @@
           (#{bookName},#{author},#{publisher},#{price},#{category},#{desc},#{user.id},#{url});
     </insert>
 
-    <select id="showAllBooksExceptSelf" parameterType="com.model.User" resultMap="book">SELECT * FROM t_book</select>
-    <select id="showMyBooks" parameterType="int" resultMap="book">SELECT * FROM t_book where t_user_id=#{0}</select>
+    <select id="showAllBooksByCategory" parameterType="int" resultMap="book">SELECT * FROM t_book WHERE category=#{0} AND status=0</select>
+    <select id="showAllBooksByAuthorOrBookName" parameterType="string" resultMap="book">
+        SELECT * FROM t_book WHERE status=0 AND author LIKE CONCAT(#{0},'%') OR bookname LIKE CONCAT(#{0},'%')
+    </select>
+    <select id="showMyBooks" parameterType="int" resultMap="book">SELECT * FROM t_book WHERE t_user_id=#{0} AND status!=-1</select>
+    <select id="getMyAvaliableBooks" parameterType="int" resultMap="book">SELECT  * FROM t_book WHERE  t_user_id=#{0} AND status=0</select>
+
+
+    <select id="showBookById" parameterType="int" resultMap="book">SELECT * FROM t_book WHERE id=#{0}</select>
+
+    <update id="updateBookStatus" parameterType="int">UPDATE t_book SET status=1 WHERE id=#{0}</update>
+    <update id="resumeBookStatus" parameterType="int">UPDATE t_book SET status=0 WHERE id=#{0}</update>
+    <update id="removeBook" parameterType="int">UPDATE t_book SET status=-1 WHERE id=#{0}</update>
+    <update id="modifyBookStatus" parameterType="int">UPDATE t_book SET status=2 WHERE id=#{0}</update>
 
 </mapper>

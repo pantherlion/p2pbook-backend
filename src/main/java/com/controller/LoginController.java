@@ -15,13 +15,18 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-
     @RequestMapping(value = "/login")
     public Map<String,String> login(@RequestBody User user){
          boolean flag = loginService.login(user);
          Map<String,String> resultMap=new HashMap<>();
          if(flag==true){
              resultMap.put("result","success");
+             if(user.getIdentity().equals("1")){
+                 resultMap.put("identity","user");
+             }
+             else{
+                 resultMap.put("identity","admin");
+             }
          }
          else{
              resultMap.put("result","fail");

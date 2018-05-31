@@ -14,21 +14,48 @@
         <result column="tel" jdbcType="VARCHAR" property="tel"/>
         <result column="deposit" jdbcType="REAL" property="deposit"/>
         <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="auth" jdbcType="TINYINT" property="auth" />
     </resultMap>
 
-    <select id="getUserByUserName" parameterType="string" resultMap="user"> SELECT * FROM t_user WHERE username = #{userName}</select>
-    <select id="getAdminByUserName" parameterType="string" resultMap="user"> SELECT * FROM t_admin WHERE username = #{userName}</select>
+    <resultMap id="recharge-detail" type="com.model.RechargeDetail">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="money" jdbcType="REAL" property="money"/>
+        <result column="time" jdbcType="TIMESTAMP" property="time"/>
+    </resultMap>
+
+    <resultMap id="consume-detail" type="com.model.ConsumeDetail">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="money" jdbcType="REAL" property="money"/>
+        <result column="time" jdbcType="TIMESTAMP" property="time"/>
+    </resultMap>
+
+    <select id="getUserByUserName" parameterType="string" resultMap="user"> SELECT * FROM t_user WHERE username = #{userName} AND  auth=0</select>
+    <select id="getAdminByUserName" parameterType="string" resultMap="user"> SELECT * FROM t_user WHERE username = #{userName} AND auth=1</select>
     <select id="getUserById" parameterType="int" resultMap="user">SELECT * FROM t_user WHERE id=#{id}</select>
     <select id="getDeposit" parameterType="string" resultType="float">SELECT deposit FROM t_user WHERE username=#{0}</select>
+    <select id="getRechargeDetails" parameterType="int" resultMap="recharge-detail">SELECT * from t_recharge WHERE t_user_id=#{0}</select>
+    <select id="getConsumeDetails" parameterType="int" resultMap="consume-detail">SELECT  * FROM t_consume WHERE t_user_id=#{0}</select>
 
     <insert id="addUser" parameterType="com.model.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
-    INSERT INTO t_user(username,password,name,tel,identity,address,url)
+    INSERT INTO t_user(username,password,name,tel,identity,address,url,auth)
     VALUES
-        (#{userName},#{passWord},#{name},#{tel},#{identity},#{address},#{url});
+        (#{userName},#{passWord},#{name},#{tel},#{identity},#{address},#{url},#{auth});
+    </insert>
+
+    <insert id="addRechargeDetail" parameterType="com.model.RechargeDetail" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO t_recharge(time,money,t_user_id)
+        VALUES
+          (#{time},#{money},#{t_user_id});
+    </insert>
+
+    <insert id="addConsumeDetail" parameterType="com.model.ConsumeDetail" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO t_consume(time,money,t_user_id)
+        VALUES
+           (#{time},#{money},#{t_user_id})
     </insert>
 
     <update id="addDeposit"> UPDATE t_user SET deposit=deposit+#{1} where id=#{0}</update>
-    <update id="subDeposit">UPDATE t_user SET deposit=deposit+#{1} where id=#{0}</update>
+    <update id="subDeposit">UPDATE t_user SET deposit=deposit-#{1} where id=#{0}</update>
     <update id="updatePassWord">UPDATE t_user SET password=#{1} where id=#{0}</update>
 
 

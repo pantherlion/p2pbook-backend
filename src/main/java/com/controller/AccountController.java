@@ -1,6 +1,8 @@
 package com.controller;
 
+import com.model.ConsumeDetail;
 import com.model.PassWord;
+import com.model.RechargeDetail;
 import com.model.User;
 import com.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -23,6 +26,7 @@ public class AccountController {
     public User getCurrentUser(){
         return accountService.getCurrentUser();
     }
+
     @RequestMapping(value = "/addDeposit")
     public Map<String,Object> addDeposit(@RequestBody User user){
         int result =accountService.addDeposit(user.getDeposit());
@@ -53,5 +57,15 @@ public class AccountController {
             resultMap.put("result", "fail");
         }
         return resultMap;
+    }
+
+   @RequestMapping(value="/getRechargeDetail")
+    public List<RechargeDetail> getRechargeDetails(){
+        return accountService.getRechargeDetails();
+    }
+
+    @RequestMapping("/getConsumeDetail")
+    public List<ConsumeDetail> getConsumeDetails(){
+        return accountService.getConsumeDetails();
     }
 }

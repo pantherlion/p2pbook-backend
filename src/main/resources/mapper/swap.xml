@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.SwapDao">
+   <resultMap id="swap" type="com.model.Swap">
+       <id column="id" jdbcType="INTEGER" property="id"/>
+       <result column="status" jdbcType="INTEGER" property="status"/>
+       <association property="book1" select="com.dao.BookDao.showBookById" column="t_book_id1"/>
+       <association property="book2" select="com.dao.BookDao.showBookById" column="t_book_id2"/>
+   </resultMap>
+
+    <select id="getWaitingSwaps" parameterType="int" resultMap="swap">
+        SELECT * FROM t_swap AS swap
+        INNER JOIN t_book AS book ON swap.t_book_id2=book.id
+        INNER JOIN t_user  AS user ON user.id=book.t_user_id
+        WHERE user.id=#{0} AND swap.status=0
+    </select>
+
+    <select id="getSwapStatus" parameterType="int" resultMap="swap">
+        SELECT * FROM t_swap AS swap
+        INNER JOIN t_book AS book ON swap.t_book_id2=book.id
+        INNER JOIN t_user  AS user ON user.id=book.t_user_id
+        WHERE user.id=#{0} AND swap.status!=0
+        UNION
+        SELECT * FROM t_swap AS swap
+        INNER JOIN t_book AS book ON swap.t_book_id1=book.id
+        INNER JOIN t_user  AS user ON user.id=book.t_user_id
+        WHERE user.id=#{0}
+    </select>
+
+    <select id="getAuditDeals" resultMap="swap">
+        SELECT * FROM t_swap  WHERE  status=1
+    </select>
+
+    <insert id="addSwap">
+        INSERT INTO t_swap(t_book_id1,t_book_id2)
+        VALUES
+        (#{0},#{1});
+    </insert>
+    
+    <update id="agreeSwap" parameterType="int">
+        UPDATE t_swap SET status=1 WHERE id=#{0}
+    </update>
+    
+    <update id="agreeDeal" parameterType="int">
+        UPDATE t_swap SET status=2 WHERE id=#{0}
+    </update>
+    
+    <update id="rejectDeal" parameterType="int">
+         UPDATE t_swap SET status=-1 WHERE id=#{0}
+    </update>
+
+</mapper>

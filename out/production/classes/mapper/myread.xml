@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.MyReadDao">
+    <resultMap id="myread" type="com.model.MyRead">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="page" jdbcType="INTEGER" property="page" />
+        <association property="book" select="com.dao.BookDao.showBookById" column="t_book_id"/>
+    </resultMap>
+
+    <insert id="addMyRead">
+        INSERT INTO t_myread(page,t_book_id)
+        VALUES
+        (0,#{0});
+    </insert>
+
+    <delete id="deleteMyRead">
+        DELETE FROM t_myread WHERE t_book_id=#{0}
+    </delete>
+
+    <select id="getMyRead" parameterType="int" resultMap="myread">
+        SELECT * FROM t_myread AS myread
+        INNER JOIN  t_book  AS book ON book.id=myread.t_book_id
+        WHERE book.t_user_id=#{0}
+    </select>
+</mapper>
