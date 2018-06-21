@@ -49,5 +49,18 @@ public class MyReadController {
         return resultMap;
     }
 
+    @RequestMapping("/updateSchedule")
+    public Map<String,String> updateSchedule(int bookId,int page,String deadLine){
+        System.out.println(deadLine);
+        int result = myReadService.updateSchedule(bookId,page,deadLine);
+        Map<String,String> resultMap=new HashMap<>();
+        if(result>0){
+            resultMap.put("result","success");
+        }
+        else{
+            resultMap.put("result","fail");
+        }
+        return resultMap;
+    }
 
 }

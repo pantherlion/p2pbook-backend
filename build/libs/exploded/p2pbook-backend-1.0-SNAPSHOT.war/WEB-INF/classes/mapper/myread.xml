@@ -7,6 +7,7 @@
     <resultMap id="myread" type="com.model.MyRead">
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="page" jdbcType="INTEGER" property="page" />
+        <result column="deadline" jdbcType="TIMESTAMP" property="deadLine"/>
         <association property="book" select="com.dao.BookDao.showBookById" column="t_book_id"/>
     </resultMap>
 
@@ -15,6 +16,10 @@
         VALUES
         (0,#{0});
     </insert>
+    
+    <update id="updateSchedule">
+        UPDATE t_myread SET page=#{1},deadline=#{2} WHERE t_book_id=#{0}
+    </update>
 
     <delete id="deleteMyRead">
         DELETE FROM t_myread WHERE t_book_id=#{0}

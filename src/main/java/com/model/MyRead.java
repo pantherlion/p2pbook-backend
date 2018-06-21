@@ -1,9 +1,12 @@
 package com.model;
 
+import java.sql.Timestamp;
+
 public class MyRead {
     private int id;
     private int page;
     private Book book;
+    private Timestamp deadLine;
 
     public int getId() {
         return id;
@@ -27,5 +30,13 @@ public class MyRead {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public Timestamp getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(Timestamp deadLine) {
+        this.deadLine = deadLine;
     }
 }

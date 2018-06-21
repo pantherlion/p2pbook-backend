@@ -30,9 +30,8 @@
         WHERE user.id=#{0}
     </select>
 
-    <select id="getAuditDeals" resultMap="swap">
-        SELECT * FROM t_swap  WHERE  status=1
-    </select>
+    <select id="getDeals" resultMap="swap" parameterType="int">SELECT * FROM t_swap  WHERE  status=#{0}</select>
+    <select id="getDealsById" resultMap="swap" parameterType="int">SELECT * FROM t_swap WHERE id=#{0}</select>
 
     <insert id="addSwap">
         INSERT INTO t_swap(t_book_id1,t_book_id2)

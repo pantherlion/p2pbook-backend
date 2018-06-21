@@ -50,9 +50,9 @@ public class SwapController {
         return swapService.getSwapStatus();
     }
 
-    @RequestMapping("/getAuditDeals")
-    public List<Swap> getAuditDeals(){
-        return swapService.getAuditDeals();
+    @RequestMapping("/getDeals")
+    public List<Swap> getDeals(int statusId){
+        return swapService.getDeals(statusId);
     }
 
     @RequestMapping("/agreeDeal")

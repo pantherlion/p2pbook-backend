@@ -10,7 +10,8 @@ public interface SwapDao {
     List<Swap> getWaitingSwaps(int userId);
     int agreeSwap(int swapId);
     List<Swap> getSwapStatus(int userId);
-    List<Swap> getAuditDeals();
+    List<Swap> getDeals(int statusId);
+    Swap getDealsById(int dealId);
     int agreeDeal(int dealId);
     int rejectDeal(int dealId);
 }

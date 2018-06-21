@@ -33,7 +33,7 @@ public class LoginServiceImpl implements LoginService {
         else if("2".equals(identity)){
             //平台管理员
             User admin = userDao.getAdminByUserName(user.getUserName());
-            if (admin!=null && user.getPassWord()!=null && admin.getPassWord().equals(user.getPassWord())){
+            if (admin!=null && user.getPassWord()!=null && admin.getPassWord().equals(MessageDigestUtils.sha1(user.getPassWord()))){
                 return true;
             }
         }

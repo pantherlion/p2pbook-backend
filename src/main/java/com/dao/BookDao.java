@@ -15,4 +15,5 @@ public interface BookDao {
      int resumeBookStatus(int bookId);
      int modifyBookStatus(int bookId);
      List<Book> getMyAvaliableBooks(int userId);
+     int updateBookOwner(int userId,int bookId);
 }

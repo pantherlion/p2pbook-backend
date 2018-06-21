@@ -9,7 +9,7 @@ public interface SwapService {
     List<Swap> getWaitingSwap();
     int agreeSwap(int swapId);
     List<Swap> getSwapStatus();
-    List<Swap> getAuditDeals();
+    List<Swap> getDeals(int statusId);
     int agreeDeal(int dealId);
     int rejectDeal(int dealId);
 }

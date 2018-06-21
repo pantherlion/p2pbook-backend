@@ -24,7 +24,7 @@
 
     <select id="showAllBooksByCategory" parameterType="int" resultMap="book">SELECT * FROM t_book WHERE category=#{0} AND status=0</select>
     <select id="showAllBooksByAuthorOrBookName" parameterType="string" resultMap="book">
-        SELECT * FROM t_book WHERE status=0 AND author LIKE CONCAT(#{0},'%') OR bookname LIKE CONCAT(#{0},'%')
+        SELECT * FROM t_book WHERE status=0 AND (author LIKE CONCAT(#{0},'%') OR bookname LIKE CONCAT(#{0},'%'))
     </select>
     <select id="showMyBooks" parameterType="int" resultMap="book">SELECT * FROM t_book WHERE t_user_id=#{0} AND status!=-1</select>
     <select id="getMyAvaliableBooks" parameterType="int" resultMap="book">SELECT  * FROM t_book WHERE  t_user_id=#{0} AND status=0</select>
@@ -36,5 +36,7 @@
     <update id="resumeBookStatus" parameterType="int">UPDATE t_book SET status=0 WHERE id=#{0}</update>
     <update id="removeBook" parameterType="int">UPDATE t_book SET status=-1 WHERE id=#{0}</update>
     <update id="modifyBookStatus" parameterType="int">UPDATE t_book SET status=2 WHERE id=#{0}</update>
+
+    <update id="updateBookOwner" parameterType="int">UPDATE  t_book SET t_user_id=#{0} WHERE id=#{1}</update>
 
 </mapper>
